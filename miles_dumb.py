@@ -1,7 +1,7 @@
 import streamlit as st
 from groq import Groq
 
-client = Groq(api_key=st.secrets["GROQ_API_KEY"])
+client = Groq(api_key="YOUR_GROQ_API_KEY") #Paste your key here.
 
 system_prompt = """You are Miles, a delivery chatbot. You try to help but you don't really listen to what customers say.
 

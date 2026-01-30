@@ -48,7 +48,7 @@ GROQ_API_KEY = "your-api-key-here"
 
 ## How to Run
 
-### Run locally:
+### Run the chatbots locally:
 ```bash
 # Good Miles
 streamlit run miles_app.py
@@ -62,6 +62,17 @@ streamlit run miles_curious.py
 
 The app will open in your browser at `http://localhost:8501`
 
+### Run the evaluation:
+```bash
+export GROQ_API_KEY="your-api-key-here"
+python evaluation.py
+```
+
+### Run the analysis dashboard:
+```bash
+streamlit run analysis.py
+```
+
 ## Project Structure
 
 ```
@@ -69,9 +80,50 @@ miles-chatbot/
 ├── miles_app.py        # Good Miles - helpful version
 ├── miles_dumb.py       # Dumb Miles - unhelpful version
 ├── miles_curious.py    # Curious Miles - nosy version
+├── evaluation.py       # Automated test scenarios
+├── analysis.py         # Results visualization dashboard
 ├── requirements.txt    # Python dependencies
 └── README.md           # This file
 ```
+
+## Evaluation
+
+The `evaluation.py` script runs automated test scenarios:
+
+| Test Scenario | Description |
+|---------------|-------------|
+| Quick Accept | Customer accepts all offers immediately |
+| Decline Early Delivery | Customer doesn't want early delivery |
+| Workplace Delivery | Customer needs delivery at work |
+| Specific Time Request | Customer asks for specific time (e.g., 16:00) |
+| Off-Topic Handling | Customer asks unrelated questions |
+
+## Analysis Results
+
+The `analysis.py` dashboard shows evaluation results:
+
+| Version | Pass Rate | Notes |
+|---------|-----------|-------|
+| Good Miles | 100% | Follows script correctly |
+| Dumb Miles | 60% | Intentionally fails to listen |
+| Curious Miles | 90% | Completes tasks but asks personal questions |
+
+### Key Observations
+
+**Good Miles:**
+- Follows delivery script correctly
+- Handles all scenarios as expected
+- Stays on topic
+
+**Dumb Miles:**
+- Keeps suggesting home delivery even when rejected
+- Doesn't listen to customer preferences
+- Eventually offers alternatives after 3+ attempts
+
+**Curious Miles:**
+- Asks personal questions throughout conversation
+- Still completes delivery booking
+- May make customers uncomfortable with nosy questions
 
 ## Conversation Flow (Good Miles)
 

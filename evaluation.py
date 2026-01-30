@@ -1,8 +1,9 @@
-import streamlit as st
 from groq import Groq
+import streamlit as st
 
 client = Groq(api_key="YOUR_GROQ_API_KEY") #Paste your key here.
 
+# This is the Good Miles system prompt
 system_prompt = """You are Miles, a friendly delivery chatbot. You help customers reschedule parcel deliveries.
 
 ## CONVERSATION FLOW (follow this strictly):
@@ -90,34 +91,77 @@ system_prompt = """You are Miles, a friendly delivery chatbot. You help customer
 - NEVER add meta-commentary like "(conversation ends)" or stage directions
 - Just speak naturally as Miles would"""
 
-st.title("Miles Delivery Chatbot")
-
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-    st.session_state.messages.append({
-        "role": "assistant",
-        "content": "Hi, I'm Miles the Chatbot. I see that you have a delivery coming up. Would you like any assistance with it?"
-    })
-
-for msg in st.session_state.messages:
-    with st.chat_message(msg["role"]):
-        st.write(msg["content"])
-
-if prompt := st.chat_input("Type your message..."):
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user"):
-        st.write(prompt)
-
-    response = client.chat.completions.create(
-        model="llama-3.1-8b-instant",
-        messages=[{"role": "system", "content": system_prompt}] + st.session_state.messages
-    )
-
-    reply = response.choices[0].message.content
-    st.session_state.messages.append({"role": "assistant", "content": reply})
-    with st.chat_message("assistant"):
-        st.write(reply)
-
-
+def test_conversation(test_name, messages):
+    """Run a test conversation and return the responses"""
+    print(f"\n{'='*50}")
+    print(f"TEST: {test_name}")
+    print('='*50)
+    
+    conversation_history = []
+    
+    # Add opening message
+    opening = "Hi! I'm Miles the Chatbot. I see that you have a delivery coming up. Would you like any assistance with it?"
+    conversation_history.append({"role": "assistant", "content": opening})
+    print(f"Miles: {opening}")
+    
+    for user_message in messages:
+        print(f"User: {user_message}")
+        conversation_history.append({"role": "user", "content": user_message})
+        
+        response = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "system", "content": system_prompt}] + conversation_history
+        )
+        
+        reply = response.choices[0].message.content
+        conversation_history.append({"role": "assistant", "content": reply})
+        print(f"Miles: {reply}")
+    
+    return conversation_history
 
 
+# TEST SCENARIOS
+if __name__ == "__main__":
+    
+    # Test 1: Quick accept flow
+    test_conversation("Quick Accept", [
+        "Yes",
+        "Yes", 
+        "Yes",
+        "Yes"
+    ])
+    
+    # Test 2: Decline early delivery
+    test_conversation("Decline Early Delivery", [
+        "No"
+    ])
+    
+    # Test 3: Need workplace delivery
+    test_conversation("Workplace Delivery", [
+        "Yes",
+        "Yes",
+        "No, I'm at work",
+        "Can you deliver to my workplace?",
+        "Yes",
+        "No thanks"
+    ])
+    
+    # Test 4: Specific time request
+    test_conversation("Specific Time Request", [
+        "Yes",
+        "Yes",
+        "No",
+        "Can you deliver to my work at 16:00?",
+        "Yes"
+    ])
+    
+    # Test 5: Off-topic question
+    test_conversation("Off-Topic Handling", [
+        "Yes",
+        "What's the weather like?",
+        "Yes"
+    ])
+    
+    print("\n" + "="*50)
+    print("EVALUATION COMPLETE")
+    print("="*50)
