@@ -16,9 +16,9 @@ Miles is a delivery assistant chatbot that helps customers reschedule parcel del
 
 ## Live Demo Links
 
-- Good Miles: [[your-link-here]](https://chatbot-z9q4sbned6qxid7q6ivavb.streamlit.app/)
-- Dumb Miles: [[your-link-here]](https://chatbot-hw2nakyrqwbyxrr7mjdzhz.streamlit.app/)
-- Curious Miles: [[your-link-here]](https://chatbot-jiqb9xbauqsiyptfulzecm.streamlit.app/)
+- Good Miles: [[click here!]](https://chatbot-z9q4sbned6qxid7q6ivavb.streamlit.app/)
+- Dumb Miles: [[click here!]](https://chatbot-hw2nakyrqwbyxrr7mjdzhz.streamlit.app/)
+- Curious Miles: [[click here!]](https://chatbot-jiqb9xbauqsiyptfulzecm.streamlit.app/)
 
 ## Installation
 
